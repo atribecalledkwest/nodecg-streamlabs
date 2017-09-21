@@ -1,0 +1,19 @@
+{
+    "name": "nodecg-streamlabs",
+    "version": "0.0.1a",
+    "author": "Karen West <atribecalledkwest.97@gmail.com>",
+    "description": "NodeCG bundle that exposes the StreamLabs streaming API to other NodeCG bundles.",
+    "scripts": {
+        "test": "eslint extension/**/*.js"
+    },
+    "license": "SEE LICENSE IN <LICENSE>",
+    "nodecg": {
+        "compatibleRange": "~0.9"
+    },
+    "devDependencies": {
+        "eslint": "^4.7.1"
+    },
+    "dependencies": {
+        "socket.io-client": "^2.0.3"
+    }
+}
