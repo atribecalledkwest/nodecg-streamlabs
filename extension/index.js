@@ -59,16 +59,29 @@ module.exports = nodecg => {
                     name: unformatted.name,
                     when: unformatted.created_at || unformatted.publishedAt || null
                 };
+                let type_message = {
+                    type: "follow",
+                    message
+                };
 
                 if(event.for === "twitch_account") {
                     nodecg.sendMessage("twitch-follow", message);
                     emitter.emit("twitch-follow");
+
+                    nodecg.sendMessage("twitch-event", type_message);
+                    emitter.emit("twitch-event", type_message);
                 } else if(event.for === "youtube_account") {
                     nodecg.sendMessage("youtube-subscription", message);
                     emitter.emit("youtube-subscription", message);
+
+                    nodecg.sendMessage("youtube-event", type_message);
+                    emitter.emit("youtube-event", type_message);
                 } else if(event.for === "mixer_account") {
                     nodecg.sendMessage("mixer-follow", message);
                     emitter.emit("mixer-follow", message);
+
+                    nodecg.sendMessage("mixer-event", type_message);
+                    emitter.emit("mixer-event", type_message);
                 }
                 break;
             }
@@ -80,15 +93,30 @@ module.exports = nodecg => {
                     message: unformatted.message || null,
                     months: unformatted.months || 1
                 };
+                let type_message = {
+                    type: "subscription",
+                    message
+                };
+
                 if(event.for === "twitch_account") {
                     nodecg.sendMessage("twitch-subscription", message);
                     emitter.emit("twitch-subscription", message);
+
+                    nodecg.sendMessage("twitch-event", type_message);
+                    emitter.emit("twitch-event", type_message);
                 } else if(event.for === "youtube_account") {
                     nodecg.sendMessage("youtube-sponsor", message);
                     emitter.emit("youtube-sponsor", message);
+
+                    type_message.type = "sponsor";
+                    nodecg.sendMessage("youtube-event", type_message);
+                    emitter.emit("youtube-event", type_message);
                 } else if(event.for === "mixer_account") {
                     nodecg.sendMessage("mixer-subscription", message);
                     emitter.emit("mixer-subscription", message);
+
+                    nodecg.sendMessage("mixer-event", type_message);
+                    emitter.emit("mixer-event", type_message);
                 }
                 break;
             }
@@ -100,12 +128,23 @@ module.exports = nodecg => {
                     viewers: Number(unformatted.viewers),
                     type: unformatted.type
                 };
+                let type_message = {
+                    type: "host",
+                    message
+                };
+
                 if(event.for === "twitch_account") {
                     nodecg.sendMessage("twitch-host", message);
                     emitter.emit("twitch-host", message);
+
+                    nodecg.sendMessage("twitch-event", type_message);
+                    emitter.emit("twitch-event", type_message);
                 } else if(event.for === "mixer_account") {
                     nodecg.sendMessage("mixer-host", message);
                     emitter.emit("mixer-host", message);
+
+                    nodecg.sendMessage("mixer-event", type_message);
+                    emitter.emit("mixer-event", type_message);
                 }
                 break;
             }
@@ -118,13 +157,30 @@ module.exports = nodecg => {
                     amount:  unformatted.amount,
                     message: unformatted.message || unformatted.comment || null
                 };
+
                 if(event.for == "twitch_account") {
                     nodecg.sendMessage("twitch-bits", message);
                     emitter.emit("twitch-bits", message);
+
+                    let type_message = {
+                        type: "bits",
+                        message
+                    };
+                    nodecg.sendMessage("twitch-event", type_message);
+                    emitter.emit("twitch-event", type_message);
                 } else if(event.for === "youtube_account") {
                     // There are some extra values we wanna add to the message if it's for youtube
                     message.currency = unformatted.currency;
                     message.display_string = unformatted.displayString;
+                    nodecg.sendMessage("youtube-superchat", message);
+                    emitter.emit("youtube-superchat", message);
+
+                    let type_message = {
+                        type: "superchat",
+                        message
+                    };
+                    nodecg.sendMessage("youtube-event", type_message);
+                    emitter.emit("youtube-event", type_message);
                 }
                 break;
             }
