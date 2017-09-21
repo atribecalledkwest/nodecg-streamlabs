@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "socket_token": {
+            "type": "string",
+            "value": "",
+            "description": "The socket_token used to connect to StreamLabs"
+        },
+        "socketio": {
+            "type": "object",
+            "value": {
+
+            },
+            "description": "Optional values passed directly to the Socket.IO client"
+        },
+        "required": ["socket_token"]
+    }
+}
