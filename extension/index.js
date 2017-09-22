@@ -16,9 +16,9 @@ module.exports = nodecg => {
     };
     // Apply options to defaults if they exist
     if(typeof nodecg.bundleConfig.socketio === "object") {
-        nodecg.bundleConfig.socketio.forEach((value, key) => {
-            opts[key] = value;
-        });
+        for(let i in nodecg.bundleConfig.socketio) {
+            opts[i] = nodecg.bundleConfig.socketio[i];
+        }
     }
 
     let socket = io.connect(`https://sockets.streamlabs.com/?token=${nodecg.bundleConfig.socket_token}`, opts);
