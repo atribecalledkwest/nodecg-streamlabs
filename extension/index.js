@@ -66,12 +66,16 @@ module.exports = nodecg => {
                     },
                     formatted_amount: unformatted.formatted_amount
                 };
-                nodecg.sendMessage("donation", message);
-                emitter.emit("donation", message);
-                history.add({
+                let type_message = {
                     type: "donation",
                     message
-                });
+                };
+                nodecg.sendMessage("donation", message);
+                emitter.emit("donation", message);
+
+                nodecg.sendMessage("streamlabs-event", type_message);
+                emitter.emit("streamlabs-event", type_message);
+                history.add(type_message);
                 break;
             }
             case "follow": {

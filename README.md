@@ -17,6 +17,10 @@ nodecg.listenFor("youtube-event", "nodecg-streamlabs", event => {
 nodecg.listenFor("mixer-event", "nodecg-streamlabs", event => {
     // do work
 });
+
+nodecg.listenFor("streamlabs-event", "nodecg-streamlabs", event => {
+    // do work
+});
 ```
 ### In an extension
 ```js
@@ -34,11 +38,15 @@ module.exports = nodecg => {
     streamlabs.on("mixer-event", event => {
         // do work
     });
+
+    streamlabs.on("streamlabs-event", event => {
+        // do work
+    });
 };
 ```
 
 ## Events
-Each platform has a platform specific event that bundles can listen for: `twitch-event`, `youtube-event`, and `mixer-event`. Events from these are structured as such:
+Each platform has a platform specific event that bundles can listen for: `twitch-event`, `youtube-event`, `mixer-event`, and `streamlabs-event`. Events from these are structured as such:
 ```js
 {
     type: "...",
@@ -47,8 +55,6 @@ Each platform has a platform specific event that bundles can listen for: `twitch
     }
 }
 ```
-
-Additionally, a `donation` event is emitted seperately from all three of these event streams, as it is streamlabs specific.
 
 For those who want more fine-tuned control over what events they're listening to, there are also event-specific streams for each platform and event:
 ```
@@ -62,6 +68,7 @@ youtube-superchat
 mixer-follow
 mixer-subscription
 mixer-host
+donation
 ```
 
 And lastly, for those who want to handle everything themselves, the `rawEvent` stream emits every event directly.
