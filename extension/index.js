@@ -10,6 +10,18 @@ module.exports = nodecg => {
         return;
     }
 
+
+    // XXX This is a temporary fix to stop nodecg from crashing whenever we hit an unexpected event
+    // It's not perfect, and will probably be changed/removed in the future.
+    const allowed_events = [
+        "donation",
+        "follow",
+        "subscription",
+        "host",
+        "bits",
+        "superchat"
+    ];
+
     // Default options
     let opts = {
         reconnect: true
@@ -29,6 +41,11 @@ module.exports = nodecg => {
         // For people who wanna handle some of the dirty work themselves
         nodecg.sendMessage("rawEvent", event);
         emitter.emit("rawEvent", event);
+
+        // XXX Continuation of temporary fix above
+        if(allowed_events.indexOf(event.type) === -1) {
+            return;
+        }
 
         // I don't think StreamLabs uses more or less than one message per event.message, but just in case
         let unformatted = event.message.pop();
