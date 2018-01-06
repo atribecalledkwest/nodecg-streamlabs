@@ -64,7 +64,8 @@ module.exports = nodecg => {
                         amount: unformatted.amount,
                         currency: unformatted.currency
                     },
-                    formatted_amount: unformatted.formatted_amount
+                    formatted_amount: unformatted.formatted_amount,
+                    message: unformatted.message
                 };
                 let type_message = {
                     type: "donation",
