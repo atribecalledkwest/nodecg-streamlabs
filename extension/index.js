@@ -10,7 +10,6 @@ module.exports = nodecg => {
         return;
     }
 
-
     // XXX This is a temporary fix to stop nodecg from crashing whenever we hit an unexpected event
     // It's not perfect, and will probably be changed/removed in the future.
     const allowed_events = [
@@ -19,7 +18,8 @@ module.exports = nodecg => {
         "subscription",
         "host",
         "bits",
-        "superchat"
+        "superchat",
+        "raid"
     ];
 
     // Default options
@@ -215,6 +215,25 @@ module.exports = nodecg => {
                     history.add(type_message);
                 }
                 break;
+            }
+            case "raid": {
+                // Twitch raid, I don't believe there's an equivalent for Mixer or Youtube
+                let message = {
+                    id: unformatted._id || null,
+                    name: unformatted.name,
+                    amount: unformatted.raiders
+                };
+                let type_message = {
+                    type: "raid",
+                    message
+                };
+
+                nodecg.sendMessage("twitch-raid", message);
+                emitter.emit("twitch-raid", message);
+
+                nodecg.sendMessage("twitch-event", type_message);
+                emitter.emit("twitch-event", type_message);
+                history.add(type_message);
             }
             default:
                 // We don't really need a default here, as we emit all events anyways under rawEvent
