@@ -221,7 +221,7 @@ module.exports = nodecg => {
                 let message = {
                     id: unformatted._id || null,
                     name: unformatted.name,
-                    amount: unformatted.raiders
+                    viewers: unformatted.raiders
                 };
                 let type_message = {
                     type: "raid",
