@@ -10,18 +10,6 @@ module.exports = nodecg => {
         return;
     }
 
-    // XXX This is a temporary fix to stop nodecg from crashing whenever we hit an unexpected event
-    // It's not perfect, and will probably be changed/removed in the future.
-    const allowed_events = [
-        "donation",
-        "follow",
-        "subscription",
-        "host",
-        "bits",
-        "superchat",
-        "raid"
-    ];
-
     // Default options
     let opts = {
         reconnect: true
@@ -41,14 +29,11 @@ module.exports = nodecg => {
         // For people who wanna handle some of the dirty work themselves
         nodecg.sendMessage("rawEvent", event);
         emitter.emit("rawEvent", event);
+        
+        nodecg.log.info(event.type);
 
-        // XXX Continuation of temporary fix above
-        if(allowed_events.indexOf(event.type) === -1) {
-            return;
-        }
-
-        // I don't think StreamLabs uses more or less than one message per event.message, but just in case
-        let unformatted = event.message.pop();
+        let unformatted = event.message instanceof Array ? event.message.pop() : event.message;
+        
         // No message? Must be an error, so we skip it because we already do raw emits.
         if(!(unformatted instanceof Object)) {
             nodecg.log.error(`Event ${event.event_id} had no ites in its event.message property, skipping.`);
@@ -234,6 +219,17 @@ module.exports = nodecg => {
                 nodecg.sendMessage("twitch-event", type_message);
                 emitter.emit("twitch-event", type_message);
                 history.add(type_message);
+                break;
+            }
+            case "streamlabels": {
+                let message = {
+                    id: unformatted._id || null,
+                    followers: unformatted.data.total_follower_count,
+                    subs: unformatted.data.total_subscriber_count
+                };
+
+                nodecg.sendMessage("new-totals", message);
+                break;
             }
             default:
                 // We don't really need a default here, as we emit all events anyways under rawEvent
