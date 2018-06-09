@@ -229,6 +229,7 @@ module.exports = nodecg => {
                 };
 
                 nodecg.sendMessage("new-totals", message);
+                emitter.emit("new-totals", message);
                 break;
             }
             default:
