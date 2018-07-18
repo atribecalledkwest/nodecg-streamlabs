@@ -1,6 +1,6 @@
 {
     "name": "nodecg-streamlabs",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "author": "Karen West <atribecalledkwest.97@gmail.com>",
     "description": "NodeCG bundle that exposes the StreamLabs streaming API to other NodeCG bundles.",
     "scripts": {
