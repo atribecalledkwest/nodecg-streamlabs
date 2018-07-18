@@ -36,6 +36,7 @@ module.exports = nodecg => {
         // No message? Must be an error, so we skip it because we already do raw emits.
         if(!(unformatted instanceof Object)) {
             nodecg.log.error(`Event ${event.event_id} had no ites in its event.message property, skipping.`);
+            return;
         }
 
         nodecg.log.debug('New streamlabs event: ' + event.type);
