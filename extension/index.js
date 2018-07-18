@@ -222,14 +222,12 @@ module.exports = nodecg => {
                 break;
             }
             case "streamlabels": {
-                let message = {
-                    id: unformatted._id || null,
-                    followers: unformatted.data.total_follower_count,
-                    subs: unformatted.data.total_subscriber_count
-                };
+                let message = unformatted;
 
-                nodecg.sendMessage("new-totals", message);
-                emitter.emit("new-totals", message);
+                message.id = unformatted.id || unformatted._id || null,
+
+                nodecg.sendMessage("streamlabels", message);
+                emitter.emit("streamlabels", message);
                 break;
             }
             default:
