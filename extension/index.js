@@ -29,15 +29,16 @@ module.exports = nodecg => {
         // For people who wanna handle some of the dirty work themselves
         nodecg.sendMessage("rawEvent", event);
         emitter.emit("rawEvent", event);
-        
-        nodecg.log.info(event.type);
 
+        // This wouldn't be necessary if it weren't for the rogue 'streamlabels' event that is not an array
         let unformatted = event.message instanceof Array ? event.message.pop() : event.message;
         
         // No message? Must be an error, so we skip it because we already do raw emits.
         if(!(unformatted instanceof Object)) {
             nodecg.log.error(`Event ${event.event_id} had no ites in its event.message property, skipping.`);
         }
+
+        nodecg.log.debug('New streamlabs event: ' + event.type);
 
         switch(event.type) {
             case "donation": {
@@ -101,7 +102,7 @@ module.exports = nodecg => {
             case "subscription": {
                 // Twitch sub == YouTube sponsor == Mixer subscription
                 let message = {
-                    id: unformatted._id || null,
+                    id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
                     message: unformatted.message || null,
                     months: unformatted.months || 1
@@ -137,7 +138,7 @@ module.exports = nodecg => {
             case "host": {
                 // Twitch host == Mixer host, no YouTube equivalent
                 let message = {
-                    id: unformatted._id || null,
+                    id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
                     viewers: Number(unformatted.viewers),
                     type: unformatted.type
@@ -204,7 +205,7 @@ module.exports = nodecg => {
             case "raid": {
                 // Twitch raid, I don't believe there's an equivalent for Mixer or Youtube
                 let message = {
-                    id: unformatted._id || null,
+                    id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
                     viewers: unformatted.raiders
                 };
