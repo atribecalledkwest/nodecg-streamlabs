@@ -10,18 +10,6 @@ module.exports = nodecg => {
         return;
     }
 
-    // XXX This is a temporary fix to stop nodecg from crashing whenever we hit an unexpected event
-    // It's not perfect, and will probably be changed/removed in the future.
-    const allowed_events = [
-        "donation",
-        "follow",
-        "subscription",
-        "host",
-        "bits",
-        "superchat",
-        "raid"
-    ];
-
     // Default options
     let opts = {
         reconnect: true
@@ -42,17 +30,16 @@ module.exports = nodecg => {
         nodecg.sendMessage("rawEvent", event);
         emitter.emit("rawEvent", event);
 
-        // XXX Continuation of temporary fix above
-        if(allowed_events.indexOf(event.type) === -1) {
-            return;
-        }
-
-        // I don't think StreamLabs uses more or less than one message per event.message, but just in case
-        let unformatted = event.message.pop();
+        // This wouldn't be necessary if it weren't for the rogue 'streamlabels' event that is not an array
+        let unformatted = event.message instanceof Array ? event.message.pop() : event.message;
+        
         // No message? Must be an error, so we skip it because we already do raw emits.
         if(!(unformatted instanceof Object)) {
             nodecg.log.error(`Event ${event.event_id} had no ites in its event.message property, skipping.`);
+            return;
         }
+
+        nodecg.log.debug('New streamlabs event: ' + event.type);
 
         switch(event.type) {
             case "donation": {
@@ -116,7 +103,7 @@ module.exports = nodecg => {
             case "subscription": {
                 // Twitch sub == YouTube sponsor == Mixer subscription
                 let message = {
-                    id: unformatted._id || null,
+                    id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
                     message: unformatted.message || null,
                     months: unformatted.months || 1
@@ -152,7 +139,7 @@ module.exports = nodecg => {
             case "host": {
                 // Twitch host == Mixer host, no YouTube equivalent
                 let message = {
-                    id: unformatted._id || null,
+                    id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
                     viewers: Number(unformatted.viewers),
                     type: unformatted.type
@@ -219,7 +206,7 @@ module.exports = nodecg => {
             case "raid": {
                 // Twitch raid, I don't believe there's an equivalent for Mixer or Youtube
                 let message = {
-                    id: unformatted._id || null,
+                    id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
                     viewers: unformatted.raiders
                 };
@@ -234,6 +221,16 @@ module.exports = nodecg => {
                 nodecg.sendMessage("twitch-event", type_message);
                 emitter.emit("twitch-event", type_message);
                 history.add(type_message);
+                break;
+            }
+            case "streamlabels": {
+                let message = unformatted;
+
+                message.id = unformatted.id || unformatted._id || null,
+
+                nodecg.sendMessage("streamlabels", message);
+                emitter.emit("streamlabels", message);
+                break;
             }
             default:
                 // We don't really need a default here, as we emit all events anyways under rawEvent
