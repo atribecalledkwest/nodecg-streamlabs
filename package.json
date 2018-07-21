@@ -8,7 +8,7 @@
     },
     "license": "SEE LICENSE IN <LICENSE>",
     "nodecg": {
-        "compatibleRange": "~0.9"
+        "compatibleRange": ">0.9"
     },
     "devDependencies": {
         "eslint": "^4.7.1"
