@@ -23,7 +23,6 @@ module.exports = nodecg => {
 
     let socket = io.connect(`https://sockets.streamlabs.com/?token=${nodecg.bundleConfig.socket_token}`, opts);
     let emitter = new EventEmitter();
-    let history = require("./history")(nodecg);
 
     socket.on("event", event => {
         // For people who wanna handle some of the dirty work themselves
@@ -63,7 +62,6 @@ module.exports = nodecg => {
 
                 nodecg.sendMessage("streamlabs-event", type_message);
                 emitter.emit("streamlabs-event", type_message);
-                history.add(type_message);
                 break;
             }
             case "follow": {
@@ -91,7 +89,6 @@ module.exports = nodecg => {
                     nodecg.sendMessage("youtube-event", type_message);
                     emitter.emit("youtube-event", type_message);
                 }
-                history.add(type_message);
                 break;
             }
             case "subscription": {
@@ -121,7 +118,6 @@ module.exports = nodecg => {
                     nodecg.sendMessage("youtube-event", type_message);
                     emitter.emit("youtube-event", type_message);
                 }
-                history.add(type_message);
                 break;
             }
             case "host": {
@@ -144,7 +140,6 @@ module.exports = nodecg => {
                     nodecg.sendMessage("twitch-event", type_message);
                     emitter.emit("twitch-event", type_message);
                 }
-                history.add(type_message);
                 break;
             }
             case "bits":
@@ -167,7 +162,6 @@ module.exports = nodecg => {
                     };
                     nodecg.sendMessage("twitch-event", type_message);
                     emitter.emit("twitch-event", type_message);
-                    history.add(type_message);
                 } else if(event.for === "youtube_account") {
                     // There are some extra values we wanna add to the message if it's for youtube
                     message.currency = unformatted.currency;
@@ -181,7 +175,6 @@ module.exports = nodecg => {
                     };
                     nodecg.sendMessage("youtube-event", type_message);
                     emitter.emit("youtube-event", type_message);
-                    history.add(type_message);
                 }
                 break;
             }
@@ -202,7 +195,6 @@ module.exports = nodecg => {
 
                 nodecg.sendMessage("twitch-event", type_message);
                 emitter.emit("twitch-event", type_message);
-                history.add(type_message);
                 break;
             }
             case "streamlabels": {
