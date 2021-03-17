@@ -67,7 +67,7 @@ module.exports = nodecg => {
                 break;
             }
             case "follow": {
-                // Twitch follow == YouTube subscription == Mixer follow
+                // Twitch follow == YouTube subscription
                 let message = {
                     id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
@@ -90,18 +90,12 @@ module.exports = nodecg => {
 
                     nodecg.sendMessage("youtube-event", type_message);
                     emitter.emit("youtube-event", type_message);
-                } else if(event.for === "mixer_account") {
-                    nodecg.sendMessage("mixer-follow", message);
-                    emitter.emit("mixer-follow", message);
-
-                    nodecg.sendMessage("mixer-event", type_message);
-                    emitter.emit("mixer-event", type_message);
                 }
                 history.add(type_message);
                 break;
             }
             case "subscription": {
-                // Twitch sub == YouTube sponsor == Mixer subscription
+                // Twitch sub == YouTube sponsor
                 let message = {
                     id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
@@ -126,18 +120,12 @@ module.exports = nodecg => {
                     type_message.type = "sponsor";
                     nodecg.sendMessage("youtube-event", type_message);
                     emitter.emit("youtube-event", type_message);
-                } else if(event.for === "mixer_account") {
-                    nodecg.sendMessage("mixer-subscription", message);
-                    emitter.emit("mixer-subscription", message);
-
-                    nodecg.sendMessage("mixer-event", type_message);
-                    emitter.emit("mixer-event", type_message);
                 }
                 history.add(type_message);
                 break;
             }
             case "host": {
-                // Twitch host == Mixer host, no YouTube equivalent
+                // Twitch host, no YouTube equivalent
                 let message = {
                     id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
@@ -155,19 +143,13 @@ module.exports = nodecg => {
 
                     nodecg.sendMessage("twitch-event", type_message);
                     emitter.emit("twitch-event", type_message);
-                } else if(event.for === "mixer_account") {
-                    nodecg.sendMessage("mixer-host", message);
-                    emitter.emit("mixer-host", message);
-
-                    nodecg.sendMessage("mixer-event", type_message);
-                    emitter.emit("mixer-event", type_message);
                 }
                 history.add(type_message);
                 break;
             }
             case "bits":
             case "superchat": {
-                // Twitch bits == YouTube superchats, no Mixer equivalent
+                // Twitch bits == YouTube superchats
                 let message = {
                     id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
@@ -204,7 +186,7 @@ module.exports = nodecg => {
                 break;
             }
             case "raid": {
-                // Twitch raid, I don't believe there's an equivalent for Mixer or Youtube
+                // Twitch raid, I don't believe there's an equivalent for Youtube
                 let message = {
                     id: unformatted.id || unformatted._id || null,
                     name: unformatted.name,
