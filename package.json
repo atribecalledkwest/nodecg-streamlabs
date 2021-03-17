@@ -8,10 +8,10 @@
     },
     "license": "SEE LICENSE IN <LICENSE>",
     "nodecg": {
-        "compatibleRange": ">0.9"
+        "compatibleRange": "~1.8"
     },
     "devDependencies": {
-        "eslint": "^4.7.1"
+        "eslint": "^7.22.0"
     },
     "dependencies": {
         "socket.io-client": "^2.0.3"
