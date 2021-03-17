@@ -39,7 +39,7 @@ module.exports = nodecg => {
             return;
         }
 
-        nodecg.log.debug('New streamlabs event: ' + event.type);
+        nodecg.log.debug("New streamlabs event: " + event.type);
 
         switch(event.type) {
             case "donation": {
