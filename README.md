@@ -14,10 +14,6 @@ nodecg.listenFor("youtube-event", "nodecg-streamlabs", event => {
     // do work
 });
 
-nodecg.listenFor("mixer-event", "nodecg-streamlabs", event => {
-    // do work
-});
-
 nodecg.listenFor("streamlabs-event", "nodecg-streamlabs", event => {
     // do work
 });
@@ -35,9 +31,6 @@ module.exports = nodecg => {
         // do work
     });
 
-    streamlabs.on("mixer-event", event => {
-        // do work
-    });
 
     streamlabs.on("streamlabs-event", event => {
         // do work
@@ -46,7 +39,7 @@ module.exports = nodecg => {
 ```
 
 ## Events
-Each platform has a platform specific event that bundles can listen for: `twitch-event`, `youtube-event`, `mixer-event`, and `streamlabs-event`. Events from these are structured as such:
+Each platform has a platform specific event that bundles can listen for: `twitch-event`, `youtube-event`, and `streamlabs-event`. Events from these are structured as such:
 ```js
 {
     type: "...",
@@ -65,9 +58,6 @@ twitch-bits
 youtube-subscription
 youtube-sponsor
 youtube-superchat
-mixer-follow
-mixer-subscription
-mixer-host
 donation
 ```
 
