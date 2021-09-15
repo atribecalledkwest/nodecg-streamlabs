@@ -64,6 +64,29 @@ module.exports = nodecg => {
                 emitter.emit("streamlabs-event", type_message);
                 break;
             }
+            case "streamlabscharitydonation": {
+                // Donations for streamlabscharity
+                let message = {
+                    id: unformatted.id || unformatted._id || null,
+                    name: unformatted.from,
+                    amount: {
+                        amount: unformatted.amount,
+                        currency: unformatted.currency
+                    },
+                    formatted_amount: unformatted.formatted_amount,
+                    message: unformatted.message
+                };
+                let type_message = {
+                    type: "streamlabscharitydonation",
+                    message
+                };
+                nodecg.sendMessage("streamlabscharitydonation", message);
+                emitter.emit("streamlabscharitydonation", message);
+
+                nodecg.sendMessage("streamlabscharity-event", type_message);
+                emitter.emit("streamlabscharity-event", type_message);
+                break;
+            }
             case "follow": {
                 // Twitch follow == YouTube subscription
                 let message = {
